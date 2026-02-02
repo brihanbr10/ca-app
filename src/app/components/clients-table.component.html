@@ -1,0 +1,55 @@
+<div class="container">
+  <div class="header">
+    <h1>Clientes</h1>
+    <div class="tenant-selector">
+      <label for="tenant-select">Tenant:</label>
+      <select
+        id="tenant-select"
+        [(ngModel)]="selectedTenant"
+        (change)="onTenantChange()"
+        class="select"
+      >
+        <option *ngFor="let tenant of tenants" [value]="tenant.value">
+          {{ tenant.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando clientes...
+  </div>
+
+  <div *ngIf="!loading && clients.length === 0" class="empty-state">
+    No hay clientes disponibles
+  </div>
+
+  <div *ngIf="!loading && clients.length > 0" class="table-wrapper">
+    <table class="clients-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tenant ID</th>
+          <th>Nombre del Cliente</th>
+          <th>Estado</th>
+          <th>Fecha de Creación</th>
+          <th>Fecha de Actualización</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let client of clients">
+          <td>{{ client.id }}</td>
+          <td class="mono">{{ client.tenant_id }}</td>
+          <td>{{ client.client_name }}</td>
+          <td>
+            <span class="badge" [ngClass]="getStatusClass(client.client_status)">
+              {{ client.client_status }}
+            </span>
+          </td>
+          <td>{{ formatDate(client.created_at) }}</td>
+          <td>{{ formatDate(client.updated_at) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
