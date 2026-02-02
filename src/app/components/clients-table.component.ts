@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClientService, Client } from '../services/client.service';
@@ -19,7 +19,7 @@ export class ClientsTableComponent implements OnInit {
     { value: 'empresa_demo_2', label: 'Tenant 2' }
   ];
 
-  constructor(private clientService: ClientService) {}
+  constructor(private clientService: ClientService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.loadClients();
@@ -29,6 +29,7 @@ export class ClientsTableComponent implements OnInit {
     this.loading = true;
     this.clients = await this.clientService.getClients(this.selectedTenant);
     this.loading = false;
+    this.cdr.detectChanges();
   }
 
   async onTenantChange(): Promise<void> {
